@@ -21,8 +21,8 @@ public class SimpleMazeGenerator extends AMazeGenerator {
             endY = changeByBound(endY, row);
         }
         Position[] positions = new Position[2];
-        positions[0] = new Position(startX, startY);
-        positions[1] = new Position(endX, endY);
+        positions[0] = new Position(startY, startX);
+        positions[1] = new Position(endY, endX);
         return positions;
     }
 
@@ -71,12 +71,12 @@ public class SimpleMazeGenerator extends AMazeGenerator {
         int currX = start.getColumnIndex();
         int currY = start.getRowIndex();
         while (currX != end.getColumnIndex() && currY != end.getRowIndex()) {
-            maze[currX][currY] = 0;
+            maze[currY][currX] = 0;
             if (rand.nextBoolean()) //change x position
-                currX = getNextPos(currX, maze.length);
+                currX = getNextPos(currX, maze[0].length);
             else
-                currY = getNextPos(currY, maze[0].length);
+                currY = getNextPos(currY, maze.length);
         }
-        maze[currX][currY] = 0;
+        maze[currY][currX] = 0;
     }
 }
