@@ -37,9 +37,9 @@ public class SimpleMazeGenerator extends AMazeGenerator {
             return null;
         }
         Position[] positions = getStartAndEndPositions(row, column);
-        int[][] maze = new int[row][column];
-        for (int i = 0; i < row; i++)
-            for (int j = 0; j < column; j++)
+        int[][] maze = new int[column][row];
+        for (int i = 0; i < column; i++)
+            for (int j = 0; j < row; j++)
                 maze[i][j] = -1;
         setRandomPath(maze, positions[0], positions[1]);
         fillEmptySpots(maze);
