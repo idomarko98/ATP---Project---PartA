@@ -31,14 +31,22 @@ public class Maze {
             System.out.print("{ ");
             for(int j = 0; j < map[0].length; j++)
             {
-                if(i == startPosition.getRowIndex() && j == startPosition.getColumnIndex()) // change
+                if(i == startPosition.getRowIndex() && j == startPosition.getColumnIndex())
                     System.out.print("S ");
                 else{
-                    if(i == endPosition.getRowIndex() && j == endPosition.getColumnIndex()) // change
+                    if(i == endPosition.getRowIndex() && j == endPosition.getColumnIndex())
                         System.out.print("E ");
                     else
                         System.out.print(map[i][j] + " ");
-                }
+                }/*
+                if(i == startPosition.getRowIndex() && j == startPosition.getColumnIndex())
+                    System.out.print("S ");
+                else{
+                    if(i == endPosition.getRowIndex() && j == endPosition.getColumnIndex())
+                        System.out.print("E ");
+                    else
+                        System.out.print(map[i][j] + " ");
+                }*/
             }
             System.out.println("}");
         }
