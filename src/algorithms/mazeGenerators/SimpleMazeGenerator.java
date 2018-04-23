@@ -7,6 +7,14 @@ import java.util.Random;
 public class SimpleMazeGenerator extends AMazeGenerator {
     @Override
     public Maze generate(int row, int column){
+        if (row < 2 || column < 2) {
+            try {
+                throw new Exception("The Maze must be at least 2X2");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            return null;
+        }
         int[][] map;
         Position startPos, endPos, tempPos;
         map = new int[row][column];
