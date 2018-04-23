@@ -31,10 +31,10 @@ public class Maze {
             System.out.print("{ ");
             for(int j = 0; j < map[0].length; j++)
             {
-                if(i == startPosition.getColumnIndex() && j == startPosition.getRowIndex())
+                if(i == startPosition.getRowIndex() && j == startPosition.getColumnIndex()) // change
                     System.out.print("S ");
                 else{
-                    if(i == endPosition.getColumnIndex() && j == endPosition.getRowIndex())
+                    if(i == endPosition.getRowIndex() && j == endPosition.getColumnIndex()) // change
                         System.out.print("E ");
                     else
                         System.out.print(map[i][j] + " ");

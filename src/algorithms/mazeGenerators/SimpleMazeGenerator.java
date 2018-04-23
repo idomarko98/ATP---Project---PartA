@@ -51,6 +51,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
         for (int i = 0; i < maze.length; i++)
             for (int j = 0; j < maze[0].length; j++)
                 if (maze[i][j] == -1)
+                    //maze[i][j] = 1;  --  for testing
                     maze[i][j] = rand.nextInt(2);
     }
 
@@ -70,12 +71,12 @@ public class SimpleMazeGenerator extends AMazeGenerator {
         Random rand = new Random();
         int currX = start.getColumnIndex();
         int currY = start.getRowIndex();
-        while (currX != end.getColumnIndex() && currY != end.getRowIndex()) {
+        while (currX != end.getColumnIndex() || currY != end.getRowIndex()) {
             maze[currY][currX] = 0;
             if (rand.nextBoolean()) //change x position
-                currX = getNextPos(currX, maze[0].length);
+                currX = getNextPos(currX, maze[0].length - 1);
             else
-                currY = getNextPos(currY, maze.length);
+                currY = getNextPos(currY, maze.length - 1);
         }
         maze[currY][currX] = 0;
     }
