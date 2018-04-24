@@ -1,7 +1,5 @@
 package algorithms.mazeGenerators;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -20,7 +18,8 @@ public class MyMazeGenerator extends AMazeGenerator {
         }
         int[][] map;
         Stack<Position> walls;
-        ArrayList<Position> visitedPosition = new ArrayList<>();
+        //ArrayList<Position> visitedPosition = new ArrayList<>();
+        boolean[][] visitedPositions = new boolean[row][column]; //update
         Position startPosition, endPosition, tempPosition;
         walls = new Stack<>();
         Random rand = new Random();
@@ -30,13 +29,16 @@ public class MyMazeGenerator extends AMazeGenerator {
         map = new int[row][column];
         fillWithWalls(map);
         map[startPosition.getRowIndex()][startPosition.getColumnIndex()] = 0;
-        visitFrame(visitedPosition, map);
-        addWallsForPosition(startPosition, walls, map, visitedPosition);
+        //visitFrame(visitedPosition, map);
+        visitFrame(visitedPositions, map);
+        //addWallsForPosition(startPosition, walls, map, visitedPosition);
+        addWallsForPosition(startPosition, walls, map, visitedPositions);
         while (!walls.isEmpty()) {
             tempPosition = walls.pop();
             if (changeable(tempPosition, map)) {
                 map[tempPosition.getRowIndex()][tempPosition.getColumnIndex()] = 0;
-                addWallsForPosition(tempPosition, walls, map, visitedPosition);
+                //addWallsForPosition(tempPosition, walls, map, visitedPosition);
+                addWallsForPosition(tempPosition, walls, map, visitedPositions);
             }
         }
         endPosition = pickEnd(map);
@@ -88,7 +90,7 @@ public class MyMazeGenerator extends AMazeGenerator {
             return false;
         return true;
     }
-
+    /*
     private void visitFrame(ArrayList<Position> visitedPosition, int[][] map) {
         for (int i = 0; i < map.length; i++) {
             visitedPosition.add(new Position(i, 0));
@@ -99,7 +101,19 @@ public class MyMazeGenerator extends AMazeGenerator {
             visitedPosition.add(new Position(map.length - 1, i));
         }
     }
+    */
+    private void visitFrame(boolean[][] visitedPosition, int[][] map) {
+        for (int i = 0; i < map.length; i++) {
+            visitedPosition[i][0] = true;
+            visitedPosition[i][map[0].length - 1] = true;
+        }
+        for (int i = 1; i < map[0].length - 1; i++) {
+            visitedPosition[0][i] = true;
+            visitedPosition[map.length - 1][i] = true;
+        }
+    }
 
+    /*
     private void addWallsForPosition(Position currPosition, Stack<Position> walls, int[][] map, ArrayList<Position> visited) {
         Position tempPos;
         Random rand = new Random();
@@ -128,6 +142,39 @@ public class MyMazeGenerator extends AMazeGenerator {
             if (!visited.contains(tempPos)) {
                 walls.push(tempPos);
                 visited.add(tempPos);
+            }
+        }
+    }
+    */
+
+    private void addWallsForPosition(Position currPosition, Stack<Position> walls, int[][] map, boolean[][] visited) {
+        Position tempPos;
+        Random rand = new Random();
+        int randomIndex;
+        ArrayList<Position> availibleWays = new ArrayList<>();
+        if (currPosition.getRowIndex() < map.length - 1 && map[currPosition.getRowIndex() + 1][currPosition.getColumnIndex()] == 1) { //check down
+            tempPos = new Position(currPosition.getRowIndex() + 1, currPosition.getColumnIndex());
+            availibleWays.add(tempPos);
+        }
+        if (currPosition.getColumnIndex() < map[0].length - 1 && map[currPosition.getRowIndex()][currPosition.getColumnIndex() + 1] == 1) { //check right
+            tempPos = new Position(currPosition.getRowIndex(), currPosition.getColumnIndex() + 1);
+            availibleWays.add(tempPos);
+        }
+        if (currPosition.getRowIndex() > 0 && map[currPosition.getRowIndex() - 1][currPosition.getColumnIndex()] == 1) { //check up
+            tempPos = new Position(currPosition.getRowIndex() - 1, currPosition.getColumnIndex());
+            availibleWays.add(tempPos);
+        }
+        if (currPosition.getColumnIndex() > 0 && map[currPosition.getRowIndex()][currPosition.getColumnIndex() - 1] == 1) { //check left
+            tempPos = new Position(currPosition.getRowIndex(), currPosition.getColumnIndex() - 1);
+            availibleWays.add(tempPos);
+        }
+        while (!availibleWays.isEmpty()) {
+            randomIndex = rand.nextInt(availibleWays.size());
+            tempPos = availibleWays.get(randomIndex);
+            availibleWays.remove(randomIndex);
+            if (!visited[tempPos.getRowIndex()][tempPos.getColumnIndex()]) {
+                walls.push(tempPos);
+                visited[tempPos.getRowIndex()][tempPos.getColumnIndex()] = true;
             }
         }
     }
