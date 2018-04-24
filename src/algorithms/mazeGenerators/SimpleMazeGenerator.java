@@ -1,9 +1,79 @@
 package algorithms.mazeGenerators;
 
+import javafx.geometry.Pos;
+
 import java.util.Random;
 
 public class SimpleMazeGenerator extends AMazeGenerator {
-    private int changeByBound(int val, int bound) {
+    @Override
+    public Maze generate(int row, int column){
+        if (row < 2 || column < 2) {
+            try {
+                throw new Exception("The Maze must be at least 2X2");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            return null;
+        }
+        int[][] map;
+        Position startPos, endPos, tempPos;
+        map = new int[row][column];
+        startPos = new Position(0,0);
+        endPos = new Position(row-1,column-1);
+        tempPos = new Position(0 , 0);
+        initValues(map);
+        while(!(tempPos.getRowIndex() == endPos.getRowIndex()) || !(tempPos.getColumnIndex() == endPos.getColumnIndex())){
+            map[tempPos.getRowIndex()][tempPos.getColumnIndex()] = 0;
+            if(tempPos.getRowIndex() == endPos.getRowIndex())
+            {
+               goRight(map, endPos.getRowIndex(), tempPos.getColumnIndex());
+               break;
+            }
+            else if(tempPos.getColumnIndex() == endPos.getColumnIndex())
+            {
+                goDown(map, endPos.getColumnIndex(), tempPos.getRowIndex());
+                break;
+            }
+            Random rand = new Random();
+            int randInt = rand.nextInt(3);
+            switch (randInt) {
+                case 0: //Move right
+                    tempPos = new Position(tempPos.getRowIndex() + 1, tempPos.getColumnIndex());
+                    break;
+                case 1:
+                    tempPos = new Position(tempPos.getRowIndex(), tempPos.getColumnIndex() + 1);
+                    break;
+            }
+        }
+        map[row-1][column-1] = 0;
+        finishMap(map);
+        return new Maze(startPos, endPos, map);
+    }
+
+    private void finishMap(int[][] map) {
+        Random rand = new Random();
+        for(int i = 0; i < map.length; i++)
+            for(int j = 0; j < map[0].length; j++)
+                if(map[i][j] == -1)
+                    map[i][j] = rand.nextInt(2);
+    }
+
+    private void goRight(int[][] map, int row, int currentColumn) {
+        for(int i = currentColumn; i < map[0].length; i++)
+            map[row][i] = 0;
+    }
+
+    private void goDown(int[][] map, int column, int currentRow) {
+        for(int i = currentRow; i < map.length; i++)
+            map[i][column] = 0;
+    }
+
+    private void initValues(int[][] map) {
+        for(int i = 0; i < map.length; i++)
+            for(int j = 0; j < map[0].length; j++)
+                map[i][j] = -1;
+    }
+    /*private int changeByBound(int val, int bound) {
         Random rand = new Random();
         if (val < bound - 1)
             return val + rand.nextInt(bound - val);
@@ -51,7 +121,6 @@ public class SimpleMazeGenerator extends AMazeGenerator {
         for (int i = 0; i < maze.length; i++)
             for (int j = 0; j < maze[0].length; j++)
                 if (maze[i][j] == -1)
-                    //maze[i][j] = 1; // --  for testing
                     maze[i][j] = rand.nextInt(2);
     }
 
@@ -71,14 +140,13 @@ public class SimpleMazeGenerator extends AMazeGenerator {
         Random rand = new Random();
         int currX = start.getColumnIndex();
         int currY = start.getRowIndex();
-        while (currX != end.getColumnIndex() || currY != end.getRowIndex()) {
+        while (currX != end.getColumnIndex() && currY != end.getRowIndex()) {
             maze[currY][currX] = 0;
             if (rand.nextBoolean()) //change x position
-                currX = getNextPos(currX, maze[0].length - 1);
+                currX = getNextPos(currX, maze[0].length);
             else
-                currY = getNextPos(currY, maze.length - 1);
+                currY = getNextPos(currY, maze.length);
         }
         maze[currY][currX] = 0;
-    }
+    }*/
 }
-
