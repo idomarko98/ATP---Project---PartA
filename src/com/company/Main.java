@@ -9,7 +9,7 @@ public class Main {
 	// write your code here
         System.out.println("Hello World!");
         SimpleMazeGenerator smg = new SimpleMazeGenerator();
-        Maze m = smg.generate(20,30);
+        Maze m = smg.generate(4,5);
         m.print();
     }
 }

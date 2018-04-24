@@ -51,7 +51,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
         for (int i = 0; i < maze.length; i++)
             for (int j = 0; j < maze[0].length; j++)
                 if (maze[i][j] == -1)
-                    //maze[i][j] = 1;  --  for testing
+                    //maze[i][j] = 1; // --  for testing
                     maze[i][j] = rand.nextInt(2);
     }
 
@@ -81,3 +81,4 @@ public class SimpleMazeGenerator extends AMazeGenerator {
         maze[currY][currX] = 0;
     }
 }
+
