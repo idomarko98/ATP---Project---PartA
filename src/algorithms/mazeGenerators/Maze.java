@@ -62,18 +62,37 @@ public class Maze {
         return map.length;
     }
 
+    /** Get size of the mazes column
+     * @return size of the mazes column
+     */
     public int getColumnSize(){
         return map[0].length;
     }
 
-    public int getAtPosition(Position pos) throws Exception {
+    /**returns value of map for a specific position
+     * @param pos - position which value in map we want to get
+     * @return value of map for a specific position
+     */
+    public int getAtPosition(Position pos) {
         if(pos.getRowIndex() > map.length - 1 || pos.getColumnIndex() > map[0].length - 1 || pos.getRowIndex() < 0 || pos.getColumnIndex() < 0)
-            throw new Exception("Position not on map");
+        {
+            try {
+                throw new Exception("Position not on map");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return -1;
+            }
+        }
         return map[pos.getRowIndex()][pos.getColumnIndex()];
     }
 
+    /** returns value of map for a specific index
+     * @param row - index of row
+     * @param column - index of column
+     * @return value of map for a specific index
+     */
     public int getAtIndex(int row, int column){
-        if(row > map.length - 1 || column > map[0].length - 1 || row < 0 || column < 0) {
+        if(row > map.length - 1 || column > map[0].length - 1 || row < 0 || column < 0) { //Check if the index is in map
             try {
                 throw new Exception("Position not on map");
             } catch (Exception e) {
@@ -84,27 +103,22 @@ public class Maze {
         return map[row][column];
     }
 
+    /**
+     * Print the maze
+     */
     public void print(){
         for(int i = 0; i < map.length; i++){
             System.out.print("{ ");
             for(int j = 0; j < map[0].length; j++)
             {
-                if(i == startPosition.getRowIndex() && j == startPosition.getColumnIndex())
+                if(i == startPosition.getRowIndex() && j == startPosition.getColumnIndex()) // if the position is the start - mark with S
                     System.out.print("S ");
                 else{
-                    if(i == goalPosition.getRowIndex() && j == goalPosition.getColumnIndex())
+                    if(i == goalPosition.getRowIndex() && j == goalPosition.getColumnIndex()) // if the position is the start - mark with E
                         System.out.print("E ");
                     else
                         System.out.print(map[i][j] + " ");
-                }/*
-                if(i == startPosition.getRowIndex() && j == startPosition.getColumnIndex())
-                    System.out.print("S ");
-                else{
-                    if(i == endPosition.getRowIndex() && j == endPosition.getColumnIndex())
-                        System.out.print("E ");
-                    else
-                        System.out.print(map[i][j] + " ");
-                }*/
+                }
             }
             System.out.println("}");
         }

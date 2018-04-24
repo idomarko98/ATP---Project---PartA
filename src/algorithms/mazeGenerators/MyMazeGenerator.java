@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
+/**
+ * Maze Generator using Prims algorithm
+ */
 public class MyMazeGenerator extends AMazeGenerator {
     @Override
     public Maze generate(int row, int column) {
-        if (row < 3 || column < 3) {
+        if (row < 3 || column < 3) { //input validation
             try {
                 throw new Exception("The Maze must be at least 3X3");
             } catch (Exception e) {

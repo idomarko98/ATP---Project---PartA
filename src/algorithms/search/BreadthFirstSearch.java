@@ -5,8 +5,8 @@ import java.util.*;
 public class BreadthFirstSearch extends ASearchingAlgorithm {
 
     protected Queue<AState> openSet;
-    protected Set<AState> closedSet;
-    protected Map<AState,AState> meta; //Probaly will be changed - state, father of state
+    private Set<AState> closedSet;
+    private Map<AState,AState> meta; //Probaly will be changed - state, father of state
     private AState root;
 
     public BreadthFirstSearch(){
