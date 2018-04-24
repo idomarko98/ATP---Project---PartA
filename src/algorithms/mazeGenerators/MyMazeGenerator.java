@@ -40,7 +40,6 @@ public class MyMazeGenerator extends AMazeGenerator {
             tempPosition = walls.pop();
             if (changeable(tempPosition, map)) {
                 map[tempPosition.getRowIndex()][tempPosition.getColumnIndex()] = 0;
-                //addWallsForPosition(tempPosition, walls, map, visitedPosition);
                 addWallsForPosition(tempPosition, walls, map, visitedPositions);
             }
         }
@@ -48,13 +47,17 @@ public class MyMazeGenerator extends AMazeGenerator {
         return new Maze(startPosition, endPosition, map);
     }
 
+    /** Function that picks random goal position
+     * @param map  - map of the maze
+     * @return - Random goal position
+     */
     private Position pickEnd(int[][] map) {
         Random rand = new Random();
         int randInt = 0;
-        int timeOut = 0;
+        int timeOut = 0; //time limit
         int col = map[0].length - 1;
         boolean picked = false;
-        while (!picked && timeOut < map.length){
+        while (!picked && timeOut < map.length){ //Random pick until the pick is fit or time is out
             timeOut++;
             randInt = rand.nextInt(map.length-2) + 1;
             if(map[randInt][col-1] == 0){
@@ -62,12 +65,16 @@ public class MyMazeGenerator extends AMazeGenerator {
                 picked = true;
             }
         }
-        if(!picked)
+        if(!picked) //Reached to time limit
             return pickEndIterative(map);
         return  new Position(randInt,col);
 
     }
 
+    /** Function that returns Goal position by checking iteratively
+     * @param map map of the maze
+     * @return Iterative picked Goal Position
+     */
     private Position pickEndIterative(int[][] map) {
         int col = map[0].length - 1;
         for (int i = 0; i < map.length; i++) {
@@ -91,84 +98,56 @@ public class MyMazeGenerator extends AMazeGenerator {
             amountOfZeros++;
         return amountOfZeros < 2;
     }
-    /*
-    private void visitFrame(ArrayList<Position> visitedPosition, int[][] map) {
-        for (int i = 0; i < map.length; i++) {
-            visitedPosition.add(new Position(i, 0));
-            visitedPosition.add(new Position(i, map[0].length - 1));
-        }
-        for (int i = 1; i < map[0].length - 1; i++) {
-            visitedPosition.add(new Position(0, i));
-            visitedPosition.add(new Position(map.length - 1, i));
-        }
-    }
-    */
+
+    /** Function that marks all the frame as visited
+     * @param visitedPosition - Metrix of visited positions
+     * @param map - Map of the maze
+     */
     private void visitFrame(boolean[][] visitedPosition, int[][] map) {
-        for (int i = 0; i < map.length; i++) {
+        for (int i = 0; i < map.length; i++) { //Go over left and right columns
             visitedPosition[i][0] = true;
             visitedPosition[i][map[0].length - 1] = true;
         }
-        for (int i = 1; i < map[0].length - 1; i++) {
+        for (int i = 1; i < map[0].length - 1; i++) { //Go over top and bottom rows
             visitedPosition[0][i] = true;
             visitedPosition[map.length - 1][i] = true;
         }
     }
 
-    /*
-    private void addWallsForPosition(Position currPosition, Stack<Position> walls, int[][] map, ArrayList<Position> visited) {
-        Position tempPos;
-        Random rand = new Random();
-        int randomIndex;
-        ArrayList<Position> availibleWays = new ArrayList<>();
-        if (currPosition.getRowIndex() < map.length - 1 && map[currPosition.getRowIndex() + 1][currPosition.getColumnIndex()] == 1) { //check down
-            tempPos = new Position(currPosition.getRowIndex() + 1, currPosition.getColumnIndex());
-            availibleWays.add(tempPos);
-        }
-        if (currPosition.getColumnIndex() < map[0].length - 1 && map[currPosition.getRowIndex()][currPosition.getColumnIndex() + 1] == 1) { //check right
-            tempPos = new Position(currPosition.getRowIndex(), currPosition.getColumnIndex() + 1);
-            availibleWays.add(tempPos);
-        }
-        if (currPosition.getRowIndex() > 0 && map[currPosition.getRowIndex() - 1][currPosition.getColumnIndex()] == 1) { //check up
-            tempPos = new Position(currPosition.getRowIndex() - 1, currPosition.getColumnIndex());
-            availibleWays.add(tempPos);
-        }
-        if (currPosition.getColumnIndex() > 0 && map[currPosition.getRowIndex()][currPosition.getColumnIndex() - 1] == 1) { //check left
-            tempPos = new Position(currPosition.getRowIndex(), currPosition.getColumnIndex() - 1);
-            availibleWays.add(tempPos);
-        }
-        while (!availibleWays.isEmpty()) {
-            randomIndex = rand.nextInt(availibleWays.size());
-            tempPos = availibleWays.get(randomIndex);
-            availibleWays.remove(randomIndex);
-            if (!visited.contains(tempPos)) {
-                walls.push(tempPos);
-                visited.add(tempPos);
-            }
-        }
-    }
-    */
-
+    /** Function that adds walls that hasn't been visited and can be added to wall list, for a specific position
+     * @param currPosition - The current position for which we are adding the walls
+     * @param walls - The walls Stack
+     * @param map - Map of the maze
+     * @param visited - Visited position metrix
+     */
     private void addWallsForPosition(Position currPosition, Stack<Position> walls, int[][] map, boolean[][] visited) {
         Position tempPos;
         Random rand = new Random();
         int randomIndex;
-        ArrayList<Position> availibleWays = new ArrayList<>();
-        if (currPosition.getRowIndex() < map.length - 1 && map[currPosition.getRowIndex() + 1][currPosition.getColumnIndex()] == 1) { //check down
+        ArrayList<Position> availibleWays = new ArrayList<>(); //List that will save the entire walls that will be added to the walls list
+        //"Check" = if the position is in the map and if it's a wall
+        //Check down
+        if (currPosition.getRowIndex() < map.length - 1 && map[currPosition.getRowIndex() + 1][currPosition.getColumnIndex()] == 1) {
             tempPos = new Position(currPosition.getRowIndex() + 1, currPosition.getColumnIndex());
             availibleWays.add(tempPos);
         }
-        if (currPosition.getColumnIndex() < map[0].length - 1 && map[currPosition.getRowIndex()][currPosition.getColumnIndex() + 1] == 1) { //check right
+        //Check right
+        if (currPosition.getColumnIndex() < map[0].length - 1 && map[currPosition.getRowIndex()][currPosition.getColumnIndex() + 1] == 1) {
             tempPos = new Position(currPosition.getRowIndex(), currPosition.getColumnIndex() + 1);
             availibleWays.add(tempPos);
         }
-        if (currPosition.getRowIndex() > 0 && map[currPosition.getRowIndex() - 1][currPosition.getColumnIndex()] == 1) { //check up
+        //check up
+        if (currPosition.getRowIndex() > 0 && map[currPosition.getRowIndex() - 1][currPosition.getColumnIndex()] == 1) {
             tempPos = new Position(currPosition.getRowIndex() - 1, currPosition.getColumnIndex());
             availibleWays.add(tempPos);
         }
-        if (currPosition.getColumnIndex() > 0 && map[currPosition.getRowIndex()][currPosition.getColumnIndex() - 1] == 1) { //check left
+        //check left
+        if (currPosition.getColumnIndex() > 0 && map[currPosition.getRowIndex()][currPosition.getColumnIndex() - 1] == 1) {
             tempPos = new Position(currPosition.getRowIndex(), currPosition.getColumnIndex() - 1);
             availibleWays.add(tempPos);
         }
+
+        //Add all the available ways and mark them as visited
         while (!availibleWays.isEmpty()) {
             randomIndex = rand.nextInt(availibleWays.size());
             tempPos = availibleWays.get(randomIndex);
@@ -180,6 +159,9 @@ public class MyMazeGenerator extends AMazeGenerator {
         }
     }
 
+    /** Fills the entire map with 1's (walls). Used for initializing for Prims Algorithm
+     * @param map - Map of the maze
+     */
     private void fillWithWalls(int[][] map) {
         for (int i = 0; i < map.length; i++)
             for (int j = 0; j < map[0].length; j++)
