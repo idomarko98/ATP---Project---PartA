@@ -19,10 +19,11 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
     public Solution solve(ISearchable domain) {
         root = domain.getStartState();
         meta.put(root, null);
-        openSet.add(root);
+        //openSet.add(root);
+        addToSet(root);
         AState temp;
         while(!openSet.isEmpty()){
-            temp = openSet.remove();
+            temp = openSet.poll();
 
             if(domain.isGoalState(temp))
                 return constructPath(meta, temp);
@@ -36,13 +37,18 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
                 if(!openSet.contains(child))
                 {
                     meta.put(child, temp);
-                    openSet.add(child);
+                    //openSet.add(child);
+                    addToSet(child);
                 }
             }
 
             closedSet.add(temp);
         }
         return null;
+    }
+
+    protected void addToSet(AState state){
+        openSet.add(state);
     }
 
     private Solution constructPath(Map<AState, AState> meta, AState temp) {

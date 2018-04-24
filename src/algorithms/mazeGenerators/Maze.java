@@ -1,21 +1,38 @@
 package algorithms.mazeGenerators;
 
+/**
+ * A class the describes the maze
+ * Data members - startPosition(the start position of the maze - position), goalPosition(the end position of the maze - position)
+ *                map(the maze - int[][])
+ */
 public class Maze {
     private Position startPosition, goalPosition;
     private int[][] map;
 
+    /** Constructor
+     * @param startPosition - Start position of the maze
+     * @param endPosition - End position of the maze
+     * @param map - The maze int[][] representation
+     */
     public Maze(Position startPosition, Position endPosition, int[][] map) {
         this.startPosition = new Position(startPosition);
         this.goalPosition = new Position(endPosition);
         this.map = copyMap(map);
     }
-    
+
+    /** Copy constructor
+     * @param maze - maze to be copied
+     */
     public Maze(Maze maze){
         this.startPosition = maze.getStartPosition();
         this.goalPosition = maze.getGoalPosition();
         this.map = copyMap(maze.map);
     }
 
+    /** copy int[][] type
+     * @param map - int[][] object to be copied
+     * @return copied map
+     */
     private int[][] copyMap(int[][] map) {
         int[][] newMap = new int[map.length][map[0].length];
         for(int i = 0; i < map.length; i++)
@@ -24,14 +41,23 @@ public class Maze {
         return newMap;
     }
 
+    /**Get the start position of maze
+     * @return start position of maze
+     */
     public Position getStartPosition() {
         return new Position(startPosition);
     }
 
+    /**Get the end position of maze
+     * @return end position of maze
+     */
     public Position getGoalPosition() {
         return new Position(goalPosition);
     }
 
+    /** Get size of the mazes row
+     * @return size of the mazes row
+     */
     public int getRowSize(){
         return map.length;
     }
