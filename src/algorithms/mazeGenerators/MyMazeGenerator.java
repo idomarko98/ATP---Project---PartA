@@ -9,6 +9,11 @@ import java.util.Stack;
  * Maze Generator using Prims algorithm
  */
 public class MyMazeGenerator extends AMazeGenerator {
+    /** Generate maze using Prims algorithm
+     * @param row    - size of mazes row
+     * @param column - size of mazes column
+     * @return Maze
+     */
     @Override
     public Maze generate(int row, int column) {
         if (row < 3 || column < 3) { //input validation
@@ -19,23 +24,18 @@ public class MyMazeGenerator extends AMazeGenerator {
             }
             return null;
         }
-        int[][] map;
-        Stack<Position> walls;
-        //ArrayList<Position> visitedPosition = new ArrayList<>();
-        boolean[][] visitedPositions = new boolean[row][column]; //update
+        int[][] map; // Map of the maze
+        Stack<Position> walls; // Stack of walls
+        boolean[][] visitedPositions = new boolean[row][column]; //boolean[][] the indicates rather a position has been visited or not
         Position startPosition, endPosition, tempPosition;
         walls = new Stack<>();
         Random rand = new Random();
-        startPosition = new Position(rand.nextInt(row - 2) + 1, 0); //start at left side
-        //tempPosition = new Position(rand.nextInt(row),rand.nextInt(column));
-        //visitedPosition.add(tempPosition);
+        startPosition = new Position(rand.nextInt(row - 2) + 1, 0); //Start at left side
         map = new int[row][column];
-        fillWithWalls(map);
-        map[startPosition.getRowIndex()][startPosition.getColumnIndex()] = 0;
-        //visitFrame(visitedPosition, map);
-        visitFrame(visitedPositions, map);
-        //addWallsForPosition(startPosition, walls, map, visitedPosition);
-        addWallsForPosition(startPosition, walls, map, visitedPositions);
+        fillWithWalls(map); //Fill the map with 1's (walls)
+        map[startPosition.getRowIndex()][startPosition.getColumnIndex()] = 0; //Make start position to zero
+        visitFrame(visitedPositions, map); //Mark all the frame with 1's (walls)
+        addWallsForPosition(startPosition, walls, map, visitedPositions); //Add walls
         while (!walls.isEmpty()) {
             tempPosition = walls.pop();
             if (changeable(tempPosition, map)) {

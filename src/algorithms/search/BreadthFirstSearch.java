@@ -20,7 +20,7 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
         root = domain.getStartState();
         meta.put(root, null);
         //openSet.add(root);
-        addToSet(root);
+        addToSet(root,null);
         AState temp;
         while(!openSet.isEmpty()){
             temp = openSet.poll();
@@ -38,7 +38,7 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
                 {
                     meta.put(child, temp);
                     //openSet.add(child);
-                    addToSet(child);
+                    addToSet(child,temp);
                 }
             }
 
@@ -47,7 +47,7 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
         return null;
     }
 
-    protected void addToSet(AState state){
+    protected void addToSet(AState state, AState fatherState){
         openSet.add(state);
     }
 
