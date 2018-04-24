@@ -1,11 +1,18 @@
 package algorithms.mazeGenerators;
 
+import java.util.Objects;
+
 public class Position {
     private int rowIndex, columnIndex;
 
     public Position(int rowIndex, int columnIndex) {
         this.rowIndex = rowIndex;
         this.columnIndex = columnIndex;
+    }
+
+    public Position(Position p){
+        this.rowIndex = p.getRowIndex();
+        this.columnIndex = p.getColumnIndex();
     }
 
     public int getColumnIndex() {
@@ -28,11 +35,11 @@ public class Position {
 
     @Override
     public int hashCode() {
-        return this.getRowIndex() / this.getColumnIndex();
+        return Objects.hash(rowIndex, columnIndex);
     }
 
     @Override
     public String toString() {
-        return "(" + getColumnIndex() + ", " + getRowIndex() + ")";
+        return "{" + getRowIndex() + "," + getColumnIndex() + "}";
     }
 }

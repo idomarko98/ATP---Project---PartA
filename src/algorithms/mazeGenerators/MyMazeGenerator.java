@@ -86,9 +86,7 @@ public class MyMazeGenerator extends AMazeGenerator {
             amountOfZeros++;
         if (map[tempPosition.getRowIndex()][tempPosition.getColumnIndex() + 1] == 0)
             amountOfZeros++;
-        if (amountOfZeros >= 2)
-            return false;
-        return true;
+        return amountOfZeros < 2;
     }
     /*
     private void visitFrame(ArrayList<Position> visitedPosition, int[][] map) {
