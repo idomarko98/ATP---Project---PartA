@@ -36,6 +36,8 @@ public class MyMazeGenerator extends AMazeGenerator {
         map[startPosition.getRowIndex()][startPosition.getColumnIndex()] = 0; //Make start position to zero
         visitFrame(visitedPositions, map); //Mark all the frame with 1's (walls)
         addWallsForPosition(startPosition, walls, map, visitedPositions); //Add walls
+        //While the walls stack is not empty, remove one from the stack and check if it's changeable,
+        //                          if so make it a path and insert it surrounding walls into walls stack
         while (!walls.isEmpty()) {
             tempPosition = walls.pop();
             if (changeable(tempPosition, map)) {
@@ -86,14 +88,24 @@ public class MyMazeGenerator extends AMazeGenerator {
         return null;
     }
 
+    /**
+     * Function that returns rather a path is changeable or not. A position is changeable if it has less than 2 surrounding paths
+     * @param tempPosition - Position to check if changeable
+     * @param map - Map of the maze
+     * @return true if changeable and false otherwise
+     */
     private boolean changeable(Position tempPosition, int[][] map) {
         int amountOfZeros = 0;
+        //Checking up
         if (map[tempPosition.getRowIndex() - 1][tempPosition.getColumnIndex()] == 0)
             amountOfZeros++;
+        //Checking down
         if (map[tempPosition.getRowIndex() + 1][tempPosition.getColumnIndex()] == 0)
             amountOfZeros++;
+        //Checking left
         if (map[tempPosition.getRowIndex()][tempPosition.getColumnIndex() - 1] == 0)
             amountOfZeros++;
+        //Checking right
         if (map[tempPosition.getRowIndex()][tempPosition.getColumnIndex() + 1] == 0)
             amountOfZeros++;
         return amountOfZeros < 2;
@@ -147,7 +159,7 @@ public class MyMazeGenerator extends AMazeGenerator {
             availibleWays.add(tempPos);
         }
 
-        //Add all the available ways and mark them as visited
+        //Add all the available ways and mark them as visited. Pushing the walls randomly so it will make a more random maze
         while (!availibleWays.isEmpty()) {
             randomIndex = rand.nextInt(availibleWays.size());
             tempPos = availibleWays.get(randomIndex);
