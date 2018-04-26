@@ -17,6 +17,15 @@ public class MazeState extends AState{
         this.position = new Position(position);
     }
 
+    /** Constructor with cost for state
+     * @param position - Position of state
+     * @param cost - Cost of state
+     */
+    public MazeState(Position position, int cost){
+        super(cost);
+        this.position = new Position(position);
+    }
+
     /** Get position of state
      * @return Position of state
      */
