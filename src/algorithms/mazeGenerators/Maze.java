@@ -15,9 +15,17 @@ public class Maze {
      * @param map - The maze int[][] representation
      */
     public Maze(Position startPosition, Position endPosition, int[][] map) {
-        this.startPosition = new Position(startPosition);
-        this.goalPosition = new Position(endPosition);
-        this.map = copyMap(map);
+        try{
+            if(startPosition == null || endPosition == null || map == null || getAtPosition(startPosition, map) == -1 || getAtPosition(startPosition, map) == -1)
+                throw new Exception("Cannot form maze");
+            this.startPosition = new Position(startPosition);
+            this.goalPosition = new Position(endPosition);
+            this.map = copyMap(map);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
     }
 
     /** Copy constructor
@@ -73,7 +81,15 @@ public class Maze {
      * @param pos - position which value in map we want to get
      * @return value of map for a specific position
      */
-    public int getAtPosition(Position pos) {
+    public int getAtPosition(Position pos, int[][] map) {
+        if(map == null){
+            try {
+                throw new Exception("Map is null");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return -1;
+            }
+        }
         if(pos.getRowIndex() > map.length - 1 || pos.getColumnIndex() > map[0].length - 1 || pos.getRowIndex() < 0 || pos.getColumnIndex() < 0)
         {
             try {
