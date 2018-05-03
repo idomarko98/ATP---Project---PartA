@@ -49,6 +49,7 @@ public abstract class AGraphSearchingAlgorithm extends ASearchingAlgorithm {
                         continue;
                     if (!openSet.contains(child)) {
                         meta.put(child, temp);
+                        child.addCost(temp.getCost()); //Add the cost of the father to the current child
                         addToSet(child);
                     }
                 }

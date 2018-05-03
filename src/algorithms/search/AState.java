@@ -36,6 +36,13 @@ public abstract class AState implements Comparable {
         return cost;
     }
 
+    /** Add a cost to the cost of current state
+     * @param cost - cost to add to this.cost
+     */
+    public void addCost(int cost){
+        this.cost += cost;
+    }
+
     /** Compare State according to its cost
      * @param o - object to be compared to
      * @return return 0 if not comparable. return the difference between 2 costs
