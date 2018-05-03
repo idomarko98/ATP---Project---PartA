@@ -59,23 +59,47 @@ public class SearchableMaze implements ISearchable {
         //Check down
         if (position.getRowIndex() < maze.getRowSize() - 1 && maze.getAtIndex(position.getRowIndex() + 1, position.getColumnIndex()) == 0) {
             tempPos = new Position(position.getRowIndex() + 1, position.getColumnIndex());
-            possiblePositions.add(new MazeState(tempPos));
+            possiblePositions.add(new MazeState(tempPos, 10));
         }
         //Check right
         if (position.getColumnIndex() < maze.getColumnSize() - 1 && maze.getAtIndex(position.getRowIndex(),position.getColumnIndex() + 1) == 0) {
             tempPos = new Position(position.getRowIndex(), position.getColumnIndex() + 1);
-            possiblePositions.add(new MazeState(tempPos));
+            possiblePositions.add(new MazeState(tempPos, 10));
         }
         //Check up
         if (position.getRowIndex() > 0 && maze.getAtIndex(position.getRowIndex() - 1, position.getColumnIndex()) == 0) {
             tempPos = new Position(position.getRowIndex() - 1, position.getColumnIndex());
-            possiblePositions.add(new MazeState(tempPos));
+            possiblePositions.add(new MazeState(tempPos, 10));
         }
         //Check left
         if (position.getColumnIndex() > 0 && maze.getAtIndex(position.getRowIndex(), position.getColumnIndex() - 1) == 0) {
             tempPos = new Position(position.getRowIndex(), position.getColumnIndex() - 1);
-            possiblePositions.add(new MazeState(tempPos));
+            possiblePositions.add(new MazeState(tempPos, 10));
         }
+
+        //Check diagonals
+
+        //Check down - left
+        if (position.getRowIndex() < maze.getRowSize() - 1 && position.getColumnIndex() > 0 && maze.getAtIndex(position.getRowIndex() + 1, position.getColumnIndex() - 1) == 0 && /*check if have a path -> */ (maze.getAtIndex(position.getRowIndex(), position.getColumnIndex() - 1) == 0 || maze.getAtIndex(position.getRowIndex() + 1, position.getColumnIndex()) == 0)) {
+            tempPos = new Position(position.getRowIndex() + 1, position.getColumnIndex() - 1);
+            possiblePositions.add(new MazeState(tempPos, 15));
+        }
+        //Check down - right
+        if (position.getColumnIndex() < maze.getColumnSize() - 1 && position.getRowIndex() < maze.getRowSize() - 1 && maze.getAtIndex(position.getRowIndex() + 1, position.getColumnIndex() + 1) == 0 && /*check if have a path -> */ (maze.getAtIndex(position.getRowIndex() + 1, position.getColumnIndex()) == 0 || maze.getAtIndex(position.getRowIndex(),position.getColumnIndex() + 1) == 0)) {
+            tempPos = new Position(position.getRowIndex() + 1, position.getColumnIndex() + 1);
+            possiblePositions.add(new MazeState(tempPos, 15));
+        }
+        //Check up - left
+        if (position.getRowIndex() > 0 && position.getColumnIndex() > 0 && maze.getAtIndex(position.getRowIndex() - 1, position.getColumnIndex() - 1) == 0 && /*check if have a path -> */ (maze.getAtIndex(position.getRowIndex(), position.getColumnIndex() - 1) == 0 || maze.getAtIndex(position.getRowIndex() - 1, position.getColumnIndex()) == 0)) {
+            tempPos = new Position(position.getRowIndex() - 1, position.getColumnIndex() - 1);
+            possiblePositions.add(new MazeState(tempPos, 15));
+        }
+        //Check up - right
+        if (position.getRowIndex() > 0 && position.getColumnIndex() < maze.getColumnSize() - 1 && maze.getAtIndex(position.getRowIndex() - 1, position.getColumnIndex() + 1) == 0 && /*check if have a path -> */ (maze.getAtIndex(position.getRowIndex(), position.getColumnIndex() + 1) == 0 || maze.getAtIndex(position.getRowIndex() - 1, position.getColumnIndex()) == 0)) {
+            tempPos = new Position(position.getRowIndex() - 1, position.getColumnIndex() + 1);
+            possiblePositions.add(new MazeState(tempPos, 15));
+        }
+
         return possiblePositions;
     }
 }
