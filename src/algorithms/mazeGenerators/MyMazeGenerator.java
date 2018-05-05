@@ -18,11 +18,11 @@ public class MyMazeGenerator extends AMazeGenerator {
     public Maze generate(int row, int column) {
         if (row < 3 || column < 3) { //input validation
             try {
-                throw new Exception("The Maze must be at least 3X3");
+                throw new Exception("The Maze must be at least 3X3, returning a default maze(10X10) instead");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-            return null;
+            return generate(10,10);
         }
         int[][] map; // Map of the maze
         Stack<Position> walls; // Stack of walls
