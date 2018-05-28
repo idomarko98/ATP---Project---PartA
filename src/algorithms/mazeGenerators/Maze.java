@@ -1,5 +1,7 @@
 package algorithms.mazeGenerators;
 
+import java.nio.ByteBuffer;
+
 /**
  * A class the describes the maze
  * Data members - startPosition(the start position of the maze - position), goalPosition(the end position of the maze - position)
@@ -140,4 +142,18 @@ public class Maze {
         }
     }
 
+    public byte[] toByteArray(){
+        int dem = map.length*map[0].length;
+        int size = Integer.BYTES*6 + dem/8;
+        if(dem % 8 != 0)
+            size++;
+        byte[] bytes = new byte[size];
+        ByteBuffer b = ByteBuffer.allocate(Integer.BYTES);
+        b.putInt(map.length);
+        return null;
+    }
+
+    public Maze(byte[] bytes){
+        // move to top after javadoc
+    }
 }
