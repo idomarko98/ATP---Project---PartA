@@ -80,6 +80,7 @@ public class Maze {
     }
 
     /**returns value of map for a specific position
+     * @param map - map to check if the position is on it
      * @param pos - position which value in map we want to get
      * @return value of map for a specific position
      */
@@ -144,16 +145,95 @@ public class Maze {
 
     public byte[] toByteArray(){
         int dem = map.length*map[0].length;
-        int size = Integer.BYTES*6 + dem/8;
-        if(dem % 8 != 0)
-            size++;
-        byte[] bytes = new byte[size];
-        ByteBuffer b = ByteBuffer.allocate(Integer.BYTES);
+        //int size = Integer.BYTES*6 + dem/8;
+        //if(dem % 8 != 0)
+        //    size++;
+        byte[] bytes;
+        ByteBuffer b = ByteBuffer.allocate(Integer.BYTES*(6 + dem));
         b.putInt(map.length);
-        return null;
+        b.putInt(map[0].length);
+        b.putInt(startPosition.getColumnIndex());
+        b.putInt(startPosition.getRowIndex());
+        b.putInt(goalPosition.getColumnIndex());
+        b.putInt(goalPosition.getRowIndex());
+        for(int i = 0; i < map.length; i++)
+            for (int j = 0; j < map[0].length; j++)
+                b.putInt(map[i][j]);
+        /*
+        int col = 0, row = 0, index = 0;
+        byte tempByte = 0x00;
+        byte[] tempBytes = {(byte)0x80,(byte)0x40, (byte)0x20, (byte)0x10, (byte)0x08, (byte)0x04, (byte)0x02, (byte)0x01};
+
+        for(int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[0].length; j++){
+                if(map[row][col] == 1){
+                    tempByte = (byte)(tempByte | tempBytes[index]);
+                }
+                if(index == 7){
+                    b.put(tempByte);
+                    tempByte = 0x00;
+                }
+                index = (index + 1) % 8;
+            }
+        }
+        if(index != 0)
+            b.put(tempByte);
+        */
+        bytes = b.array();
+        return bytes;
     }
 
     public Maze(byte[] bytes){
         // move to top after javadoc
+        try{
+            if(bytes == null || bytes.length < 24)
+                throw new Exception("Cannot form maze");
+            int length = byteArrayToInt(bytes,0);
+            int lengthZero = byteArrayToInt(bytes,4);
+            int startCol = byteArrayToInt(bytes,8);
+            int startRow = byteArrayToInt(bytes,12);
+            int endCol = byteArrayToInt(bytes,16);
+            int endRow = byteArrayToInt(bytes,20);
+
+            if(length <= 0 || lengthZero <= 0 || startCol < 0 || startRow < 0 || endCol < 0 || endRow < 0)
+                throw new Exception("Cannot form maze");
+
+            this.map = new int[length][lengthZero];
+            this.startPosition = new Position(startRow, startCol);
+            this.goalPosition = new Position(endRow, endCol);
+
+            if(bytes.length - 24 != length*lengthZero*Integer.BYTES || getAtPosition(startPosition,map) == -1 || getAtPosition(goalPosition,map) == -1) {
+                throw new Exception("Cannot form maze");
+            }
+            int index = 24;
+            for(int i = 0; i < map.length; i++) {
+                for (int j = 0; j < map[0].length; j++) {
+                    map[i][j] = byteArrayToInt(bytes,index);
+                    index += 4;
+                }
+            }
+            /*
+            int index = 24;
+            byte[] tempBytes = {(byte)0x80,(byte)0x40, (byte)0x20, (byte)0x10, (byte)0x08, (byte)0x04, (byte)0x02, (byte)0x01};
+            int tempBytesIndex = 0;
+            for(int i = 0; i < map.length; i++) {
+                for (int j = 0; j < map[0].length; j++) {
+                    if((byte)(bytes[index] & tempBytes[tempBytesIndex]) != 0x00)
+                        map[i][j] = 1;
+                    index++;
+                    tempBytesIndex = (tempBytesIndex + 1) % 8;
+                }
+            }
+            */
+        }
+        catch (Exception e){
+            System.out.println("Cannot form maze");
+        }
+
+    }
+
+    private int byteArrayToInt(byte[] bytes, int start){
+        return ((0xFF & bytes[start]) << 24) | ((0xFF & bytes[start+1]) << 16) |
+                ((0xFF & bytes[start+2]) << 8) | (0xFF & bytes[start+3]);
     }
 }
