@@ -31,6 +31,18 @@ public class RunCommunicateWithServers {
         //stringReverserServer.start();
         //Communicating with servers
         CommunicateWithServer_MazeGenerating();
+        Thread [] t = new Thread[10];
+        for (int i = 0; i < 10; i++){
+            t[i] = new Thread(()->CommunicateWithServer_SolveSearchProblem());
+            t[i].start();
+        }
+        for (int i = 0; i<10; i++) {
+            try {
+                t[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         CommunicateWithServer_SolveSearchProblem();
         //CommunicateWithServer_StringReverser();
         //Stopping all servers
@@ -56,12 +68,12 @@ public class RunCommunicateWithServers {
                                 toServer.flush();
                                 byte[] compressedMaze = (byte[])fromServer.readObject(); //read generated maze (compressed with MyCompressor) from server
                                 InputStream is = new MyDecompressorInputStream(new ByteArrayInputStream(compressedMaze));
-                                byte[] decompressedMaze = new byte[(int)Math.ceil(mazeDimensions[0]*mazeDimensions[1] / 8) + 24 /*CHANGE SIZE ACCORDING TO YOU MAZE SIZE*/]; //allocating byte[] for the decompressed maze -
+                                byte[] decompressedMaze = new byte[100000/*(int)Math.ceil(mazeDimensions[0]*mazeDimensions[1] / 8) + 24*/ /*CHANGE SIZE ACCORDING TO YOU MAZE SIZE*/]; //allocating byte[] for the decompressed maze -
                                 is.read(decompressedMaze); //Fill decompressedMaze with bytes
                                 Maze maze = new Maze(decompressedMaze);
                                 maze.print();
                             } catch (Exception e) {
-                                //e.printStackTrace();
+                                e.printStackTrace();
                             }
                         }
                     });
@@ -84,11 +96,11 @@ public class RunCommunicateWithServers {
                                         ObjectInputStream(inFromServer);
                                 toServer.flush();
                                 MyMazeGenerator mg = new MyMazeGenerator();
-                                //Maze maze = mg.generate(50, 50);
-                                int[][] hi = {{0,0,1,1,1},
+                                Maze maze = mg.generate(50, 50);
+                                /*int[][] hi = {{0,0,1,1,1},
                                               {0,0,0,1,1},
                                               {1,1,0,0,0}};
-                                Maze maze = new Maze(new Position(0,0), new Position(2,4),hi);
+                                Maze maze = new Maze(new Position(0,0), new Position(2,4),hi);*/
                                 maze.print();
                                 toServer.writeObject(maze); //send maze to server
                                 toServer.flush();

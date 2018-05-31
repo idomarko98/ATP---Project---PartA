@@ -51,6 +51,8 @@ public class Server {
                 } catch (SocketTimeoutException e) {
                 }
             }
+            server.close();
+            threadPool.shutdown();
         } catch (IOException e) {
         }
         try {

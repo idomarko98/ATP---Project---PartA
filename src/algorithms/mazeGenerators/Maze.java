@@ -203,9 +203,9 @@ public class Maze implements Serializable{
             this.startPosition = new Position(startRow, startCol);
             this.goalPosition = new Position(endRow, endCol);
 
-            if(bytes.length - 24 != length*lengthZero*Integer.BYTES || getAtPosition(startPosition,map) == -1 || getAtPosition(goalPosition,map) == -1) {
+            /*if(bytes.length - 24 != length*lengthZero*Integer.BYTES || getAtPosition(startPosition,map) == -1 || getAtPosition(goalPosition,map) == -1) {
                 throw new Exception("Cannot form maze");
-            }
+            }*/
             int index = 24;
             for(int i = 0; i < map.length; i++) {
                 for (int j = 0; j < map[0].length; j++) {
