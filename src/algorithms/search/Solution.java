@@ -1,5 +1,6 @@
 package algorithms.search;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -7,7 +8,7 @@ import java.util.Stack;
  * Class to describe a solution
  * Data member: statePath - Path of the states which lead to the solution
  */
-public class Solution {
+public class Solution implements Serializable {
     private ArrayList<AState> statesPath;
 
     /** Constructor

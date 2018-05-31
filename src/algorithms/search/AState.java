@@ -1,10 +1,12 @@
 package algorithms.search;
 
+import java.io.Serializable;
+
 /**
  * Abstract for state
  * Data member: cost of a move
  */
-public abstract class AState implements Comparable {
+public abstract class AState implements Comparable, Serializable {
 
     private int cost;
 

@@ -1,5 +1,6 @@
 package algorithms.mazeGenerators;
 
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 
 /**
@@ -7,7 +8,7 @@ import java.nio.ByteBuffer;
  * Data members - startPosition(the start position of the maze - position), goalPosition(the end position of the maze - position)
  *                map(the maze - int[][])
  */
-public class Maze {
+public class Maze implements Serializable{
     private Position startPosition, goalPosition;
     private int[][] map;
 
