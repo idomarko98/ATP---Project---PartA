@@ -1,10 +1,15 @@
 package Server;
 
+import algorithms.search.ASearchingAlgorithm;
+import algorithms.search.BestFirstSearch;
+import algorithms.search.BreadthFirstSearch;
+import algorithms.search.DepthFirstSearch;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -92,12 +97,18 @@ public class Server {
     public static class Configurations {
         static Properties prop = new Properties();
         static InputStream input = null;
+        static Map<String, ASearchingAlgorithm> algorithmMap;
 
         public static void loadFile() {
             try {
                 input = new FileInputStream("src/config.properties");
                 // load a properties file
                 prop.load(input);
+                algorithmMap = new HashMap<>();
+                algorithmMap.put("BreadthFirstSearch", new BreadthFirstSearch());
+                algorithmMap.put("BestFirstSearch", new BestFirstSearch());
+                algorithmMap.put("DepthFirstSearch", new DepthFirstSearch());
+
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -112,6 +123,18 @@ public class Server {
                 System.out.println(e.getMessage());
             }
             return 1;
+        }
+
+        public static ASearchingAlgorithm getSearchingAlgorithm(){
+            try {
+                String searchingAlgorithmName = prop.getProperty("searchingAlgorithm");
+                if(algorithmMap.containsKey(searchingAlgorithmName))
+                    return (ASearchingAlgorithm)algorithmMap.get(searchingAlgorithmName).cloneMe();
+                return new BreadthFirstSearch(); // default...
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            return new BreadthFirstSearch(); // default...
         }
 
         public static void setProp(int size) {

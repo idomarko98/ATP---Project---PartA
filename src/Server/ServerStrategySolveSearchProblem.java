@@ -10,16 +10,11 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class ServerStrategySolveSearchProblem implements IServerStrategy {
-    ISearchingAlgorithm algorithm;
-    String tempDirectoryPath;
+    private ASearchingAlgorithm algorithm;
+    private String tempDirectoryPath;
 
     public ServerStrategySolveSearchProblem() {
-        this.algorithm = new BreadthFirstSearch();
-        this.tempDirectoryPath = System.getProperty("java.io.tmpdir");
-    }
-
-    public ServerStrategySolveSearchProblem(ISearchingAlgorithm algorithm) {
-        this.algorithm = algorithm;
+        this.algorithm = Server.Configurations.getSearchingAlgorithm();
         this.tempDirectoryPath = System.getProperty("java.io.tmpdir");
     }
 
@@ -55,7 +50,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
         int goalCol = maze.getGoalPosition().getColumnIndex();
         int goalRow = maze.getGoalPosition().getRowIndex();
         int index = 0;
-        String path = tempDirectoryPath + "/maze-" + colSize + "," + rowSize + "," + startCol + "," + startRow + "," + goalCol + "," + goalRow + "-" +index;
+        String path = tempDirectoryPath + "maze-" + colSize + "," + rowSize + "," + startCol + "," + startRow + "," + goalCol + "," + goalRow + "-" +index;
         File file = new File(path);
         Solution sol = null;
         while(file.exists())
@@ -67,7 +62,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
                 decompressor.read(decompressedBytes);
                 if(Arrays.equals(bytes, decompressedBytes))
                 {
-                    sol = readSolutionFromFile(tempDirectoryPath + "/solution-" + colSize + "," + rowSize + "," + startCol + "," + startRow + "," + goalCol + "," + goalRow + "-" + index);
+                    sol = readSolutionFromFile(tempDirectoryPath + "solution-" + colSize + "," + rowSize + "," + startCol + "," + startRow + "," + goalCol + "," + goalRow + "-" + index);
                     break;
                 }
             }
@@ -81,13 +76,14 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
         }
         if(sol == null){
             ISearchable iSearchable = new SearchableMaze(maze);
-            sol = algorithm.solve(iSearchable);
+            ASearchingAlgorithm usedAlgorithm = (ASearchingAlgorithm)algorithm.cloneMe();
+            sol = usedAlgorithm.solve(iSearchable);
             saveSolution(sol, maze, index);
         }
         return sol;
     }
 
-    private Solution readSolutionFromFile(String s) { // dont forget to make solution serelizable
+    private Solution readSolutionFromFile(String s) {
         try {
             ObjectInputStream input = new ObjectInputStream(new FileInputStream(s));
             Solution sol = (Solution)input.readObject();
@@ -125,8 +121,8 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
         }
         */
         fileName += "-" + index;
-        File fileMaze = new File(tempDirectoryPath + "/maze-" + fileName);
-        File fileSolution = new File(tempDirectoryPath + "/solution-" + fileName);
+        File fileMaze = new File(tempDirectoryPath + "maze-" + fileName);
+        File fileSolution = new File(tempDirectoryPath + "solution-" + fileName);
 
         //if(fileMaze.canWrite()) {
         try {

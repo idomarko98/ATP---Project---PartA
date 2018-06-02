@@ -45,4 +45,11 @@ public class BreadthFirstSearch extends AGraphSearchingAlgorithm {
         return "BreadthFirstSearch";
     }
 
+    /** Clones the BreadthFirstSearch instance
+     * @return new BreadthFirstSearch
+     */
+    @Override
+    public Object cloneMe() {
+        return new BreadthFirstSearch();
+    }
 }

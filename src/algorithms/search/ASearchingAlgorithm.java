@@ -4,7 +4,7 @@ package algorithms.search;
  * Abstract class for searching algorithms
  * Data member: numOfEvaluatedStates - number of states which were evaluated as potential path
  */
-public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
+public abstract class ASearchingAlgorithm implements ISearchingAlgorithm, ICloneable{
     protected int numOfEvaluatedStates;
 
     /**

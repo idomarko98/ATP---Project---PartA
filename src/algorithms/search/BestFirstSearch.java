@@ -20,4 +20,12 @@ public class BestFirstSearch extends BreadthFirstSearch {
     public String getName() {
         return "BestFirstSearch";
     }
+
+    /** Clones the BestFirstSearch instance
+     * @return new BestFirstSearch
+     */
+    @Override
+    public Object cloneMe() {
+        return new BestFirstSearch();
+    }
 }

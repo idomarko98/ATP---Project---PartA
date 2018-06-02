@@ -46,4 +46,11 @@ public class DepthFirstSearch extends AGraphSearchingAlgorithm {
         return "DepthFirstSearch";
     }
 
+    /** Clones the DepthFirstSearch instance
+     * @return new DepthFirstSearch
+     */
+    @Override
+    public Object cloneMe() {
+        return new DepthFirstSearch();
+    }
 }
