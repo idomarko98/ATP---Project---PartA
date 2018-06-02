@@ -36,7 +36,6 @@ public class Server {
             System.out.println(e.getMessage());
         }*/
         Configurations.loadFile();
-        Configurations.setProp(4);
         this.port = port;
         this.listeningInterval = listeningInterval;
         this.serverStrategy = serverStrategy;
@@ -165,12 +164,14 @@ public class Server {
             return new MyMazeGenerator(); // default...
         }
 
-        public static void setProp(int size) {
+        public static void setProp(int size, String mazeGeneratingAlgorithm, String mazeSearchingAlgorithm) {
             OutputStream output = null;
             try {
                 output = new FileOutputStream("src/config.properties");
                 Properties prop = new Properties();
                 prop.setProperty("threadPoolSize", Integer.toString(size));
+                prop.setProperty("mazeGeneratingAlgorithm", mazeGeneratingAlgorithm);
+                prop.setProperty("mazeSearchingAlgorithm", mazeSearchingAlgorithm);
                 prop.store(output, null);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
