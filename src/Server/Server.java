@@ -15,22 +15,24 @@ public class Server {
     private IServerStrategy serverStrategy;
     private volatile boolean stop;
     public static ExecutorService threadPool;
-    static Properties prop = new Properties();
-    InputStream input = null;
+    //static Properties prop = new Properties();
+    //InputStream input = null;
 
     public Server(int port, int listeningInterval, IServerStrategy serverStrategy) {
-        try {
+        /*try {
             input = new FileInputStream("src/config.properties");
             // load a properties file
             prop.load(input);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
-        }
+        }*/
+        Configurations.loadFile();
+        Configurations.setProp(4);
         this.port = port;
         this.listeningInterval = listeningInterval;
         this.serverStrategy = serverStrategy;
-        this.threadPool = Executors.newFixedThreadPool(getThreadPoolSize());
+        this.threadPool = Executors.newFixedThreadPool(Configurations.getThreadPoolSize());
     }
 
     public void start() {
@@ -47,7 +49,7 @@ public class Server {
             while (!stop) {
                 try {
                     Socket clientSocket = server.accept(); // blocking call
-                    threadPool.execute(()->handleClient(clientSocket));
+                    threadPool.execute(() -> handleClient(clientSocket));
                 } catch (SocketTimeoutException e) {
                 }
             }
@@ -68,20 +70,17 @@ public class Server {
             serverStrategy.serverStrategy(clientSocket.getInputStream(), clientSocket.getOutputStream());
         } catch (IOException e) {
         }
-        try{
+        try {
             clientSocket.getInputStream().close();
+        } catch (IOException e) {
         }
-        catch (IOException e){
-        }
-        try{
+        try {
             clientSocket.getOutputStream().close();
+        } catch (IOException e) {
         }
-        catch (IOException e){
-        }
-        try{
+        try {
             clientSocket.close();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
         }
     }
 
@@ -90,15 +89,49 @@ public class Server {
     }
 
 
-    public static int getThreadPoolSize() {
-        try{
-            if(Integer.valueOf(prop.getProperty("threadPoolSize")) > 0 )
-                return Integer.valueOf(prop.getProperty("threadPoolSize"));
+    public static class Configurations {
+        static Properties prop = new Properties();
+        static InputStream input = null;
+
+        public static void loadFile() {
+            try {
+                input = new FileInputStream("src/config.properties");
+                // load a properties file
+                prop.load(input);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        public static int getThreadPoolSize() {
+            try {
+                if (Integer.valueOf(prop.getProperty("threadPoolSize")) > 0)
+                    return Integer.valueOf(prop.getProperty("threadPoolSize"));
+                return 1;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
             return 1;
         }
-        catch (Exception e){
-            System.out.println(e.getMessage());
+
+        public static void setProp(int size) {
+            OutputStream output = null;
+            try {
+                output = new FileOutputStream("src/config.properties");
+                Properties prop = new Properties();
+                prop.setProperty("threadPoolSize", Integer.toString(size));
+                prop.store(output, null);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            } finally {
+                if (output != null) {
+                    try {
+                        output.close();
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+            }
         }
-        return 1;
     }
 }
