@@ -179,4 +179,12 @@ public class MyMazeGenerator extends AMazeGenerator {
             for (int j = 0; j < map[0].length; j++)
                 map[i][j] = 1;
     }
+
+    /** Clones the MyMazeGenerator instance
+     * @return new MyMazeGenerator
+     */
+    @Override
+    public Object cloneMe() {
+        return new MyMazeGenerator();
+    }
 }

@@ -14,7 +14,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
     private String tempDirectoryPath;
 
     public ServerStrategySolveSearchProblem() {
-        this.algorithm = Server.Configurations.getSearchingAlgorithm();
+        this.algorithm = Server.Configurations.getMazeSearchingAlgorithm();
         this.tempDirectoryPath = System.getProperty("java.io.tmpdir");
     }
 

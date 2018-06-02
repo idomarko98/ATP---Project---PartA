@@ -1,6 +1,7 @@
 package Server;
 
 import IO.MyCompressorOutputStream;
+import algorithms.mazeGenerators.AMazeGenerator;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
 import com.sun.xml.internal.bind.v2.util.ByteArrayOutputStreamEx;
@@ -21,7 +22,7 @@ public class ServerStrategyGenerateMaze implements IServerStrategy {
                 int[] array = (int[])input.readObject();
                 int rows = array[0];
                 int columns = array[1];
-                MyMazeGenerator generator = new MyMazeGenerator();
+                AMazeGenerator generator = Server.Configurations.getMazeGeneratingAlgorithm();
                 Maze maze = generator.generate(rows, columns);
                 byte[] mazeBytes = maze.toByteArray();
                 compressor.write(mazeBytes);

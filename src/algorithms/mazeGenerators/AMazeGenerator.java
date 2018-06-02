@@ -1,9 +1,11 @@
 package algorithms.mazeGenerators;
 
+import algorithms.search.ICloneable;
+
 /**
  * Abstract class for maze generator - implements IMazeGenerator
  */
-public abstract class AMazeGenerator implements IMazeGenerator {
+public abstract class AMazeGenerator implements IMazeGenerator, ICloneable {
 
     /**
      * @param row -  size of mazes row

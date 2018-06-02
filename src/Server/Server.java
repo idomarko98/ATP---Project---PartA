@@ -1,5 +1,8 @@
 package Server;
 
+import algorithms.mazeGenerators.AMazeGenerator;
+import algorithms.mazeGenerators.MyMazeGenerator;
+import algorithms.mazeGenerators.SimpleMazeGenerator;
 import algorithms.search.ASearchingAlgorithm;
 import algorithms.search.BestFirstSearch;
 import algorithms.search.BreadthFirstSearch;
@@ -95,23 +98,36 @@ public class Server {
 
 
     public static class Configurations {
-        static Properties prop = new Properties();
-        static InputStream input = null;
-        static Map<String, ASearchingAlgorithm> algorithmMap;
+        static private Properties prop = new Properties();
+        static private InputStream input = null;
+        static private Map<String, ASearchingAlgorithm> mazeSearchingAlgorithmMap;
+        static private Map<String, AMazeGenerator> mazeGeneratingAlgorithmMap;
 
         public static void loadFile() {
             try {
                 input = new FileInputStream("src/config.properties");
                 // load a properties file
                 prop.load(input);
-                algorithmMap = new HashMap<>();
-                algorithmMap.put("BreadthFirstSearch", new BreadthFirstSearch());
-                algorithmMap.put("BestFirstSearch", new BestFirstSearch());
-                algorithmMap.put("DepthFirstSearch", new DepthFirstSearch());
+                initializeSearchingAlgorithmMap();
+                initializeGeneratingAlgorithmMap();
+
 
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+        }
+
+        private static void initializeSearchingAlgorithmMap(){
+            mazeSearchingAlgorithmMap = new HashMap<>();
+            mazeSearchingAlgorithmMap.put("BreadthFirstSearch", new BreadthFirstSearch());
+            mazeSearchingAlgorithmMap.put("BestFirstSearch", new BestFirstSearch());
+            mazeSearchingAlgorithmMap.put("DepthFirstSearch", new DepthFirstSearch());
+        }
+
+        private static void initializeGeneratingAlgorithmMap(){
+            mazeGeneratingAlgorithmMap = new HashMap<>();
+            mazeGeneratingAlgorithmMap.put("MyMazeGenerator", new MyMazeGenerator());
+            mazeGeneratingAlgorithmMap.put("SimpleMazeGenerator", new SimpleMazeGenerator());
         }
 
         public static int getThreadPoolSize() {
@@ -125,16 +141,28 @@ public class Server {
             return 1;
         }
 
-        public static ASearchingAlgorithm getSearchingAlgorithm(){
+        public static ASearchingAlgorithm getMazeSearchingAlgorithm(){
             try {
-                String searchingAlgorithmName = prop.getProperty("searchingAlgorithm");
-                if(algorithmMap.containsKey(searchingAlgorithmName))
-                    return (ASearchingAlgorithm)algorithmMap.get(searchingAlgorithmName).cloneMe();
+                String mazeSearchingAlgorithmName = prop.getProperty("mazeSearchingAlgorithm");
+                if(mazeSearchingAlgorithmMap.containsKey(mazeSearchingAlgorithmName))
+                    return (ASearchingAlgorithm)mazeSearchingAlgorithmMap.get(mazeSearchingAlgorithmName).cloneMe();
                 return new BreadthFirstSearch(); // default...
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
             return new BreadthFirstSearch(); // default...
+        }
+
+        public static AMazeGenerator getMazeGeneratingAlgorithm(){
+            try {
+                String mazeGeneratingAlgorithmName = prop.getProperty("mazeGeneratingAlgorithm");
+                if(mazeGeneratingAlgorithmMap.containsKey(mazeGeneratingAlgorithmName))
+                    return (AMazeGenerator) mazeGeneratingAlgorithmMap.get(mazeGeneratingAlgorithmName).cloneMe();
+                return new MyMazeGenerator(); // default...
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            return new MyMazeGenerator(); // default...
         }
 
         public static void setProp(int size) {

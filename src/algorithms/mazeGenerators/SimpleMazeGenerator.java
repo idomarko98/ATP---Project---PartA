@@ -97,4 +97,12 @@ public class SimpleMazeGenerator extends AMazeGenerator {
             for(int j = 0; j < map[0].length; j++)
                 map[i][j] = -1;
     }
+
+    /** Clones the SimpleMazeGenerator instance
+     * @return new SimpleMazeGenerator
+     */
+    @Override
+    public Object cloneMe() {
+        return new SimpleMazeGenerator();
+    }
 }
