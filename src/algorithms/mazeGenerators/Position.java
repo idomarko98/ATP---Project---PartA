@@ -1,12 +1,13 @@
 package algorithms.mazeGenerators;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Class that describes a position
  * Data members: rowIndex - the row index(int), columnIndex - the column index(int)
  */
-public class Position {
+public class Position implements Serializable{
     private int rowIndex, columnIndex;
 
     /** Constructor
