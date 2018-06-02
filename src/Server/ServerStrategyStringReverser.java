@@ -16,9 +16,9 @@ public class ServerStrategyStringReverser implements IServerStrategy{
                 toClient.flush();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 }

@@ -22,7 +22,7 @@ public class RunCompressDecompressMaze {
             out.flush();
             out.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         byte savedMazeBytes[] = new byte[0];
@@ -33,7 +33,7 @@ public class RunCompressDecompressMaze {
             in.read(savedMazeBytes);
             in.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         Maze loadedMaze = new Maze(savedMazeBytes);

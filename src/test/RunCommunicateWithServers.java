@@ -40,7 +40,7 @@ public class RunCommunicateWithServers {
             try {
                 t[i].join();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
         }
         CommunicateWithServer_SolveSearchProblem();
@@ -73,13 +73,12 @@ public class RunCommunicateWithServers {
                                 Maze maze = new Maze(decompressedMaze);
                                 maze.print();
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                System.out.println(e.getMessage());
                             }
                         }
                     });
             client.communicateWithServer();
         } catch (UnknownHostException e) {
-            //e.printStackTrace();
         }
     }
     private static void CommunicateWithServer_SolveSearchProblem() {
@@ -113,13 +112,13 @@ public class RunCommunicateWithServers {
                                             mazeSolutionSteps.get(i).toString()));
                                 }
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                System.out.println(e.getMessage());
                             }
                         }
                     });
             client.communicateWithServer();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
     private static void CommunicateWithServer_StringReverser() {
@@ -143,13 +142,13 @@ public class RunCommunicateWithServers {
                                 fromServer.close();
                                 toServer.close();
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                System.out.println(e.getMessage());
                             }
                         }
                     });
             client.communicateWithServer();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 }
