@@ -59,22 +59,22 @@ public class SearchableMaze implements ISearchable {
         //Check down
         if (position.getRowIndex() < maze.getRowSize() - 1 && maze.getAtIndex(position.getRowIndex() + 1, position.getColumnIndex()) == 0) {
             tempPos = new Position(position.getRowIndex() + 1, position.getColumnIndex());
-            possiblePositions.add(new MazeState(tempPos, 10));
+            possiblePositions.add(new MazeState(tempPos, 1));
         }
         //Check right
         if (position.getColumnIndex() < maze.getColumnSize() - 1 && maze.getAtIndex(position.getRowIndex(),position.getColumnIndex() + 1) == 0) {
             tempPos = new Position(position.getRowIndex(), position.getColumnIndex() + 1);
-            possiblePositions.add(new MazeState(tempPos, 10));
+            possiblePositions.add(new MazeState(tempPos, 1));
         }
         //Check up
         if (position.getRowIndex() > 0 && maze.getAtIndex(position.getRowIndex() - 1, position.getColumnIndex()) == 0) {
             tempPos = new Position(position.getRowIndex() - 1, position.getColumnIndex());
-            possiblePositions.add(new MazeState(tempPos, 10));
+            possiblePositions.add(new MazeState(tempPos, 1));
         }
         //Check left
         if (position.getColumnIndex() > 0 && maze.getAtIndex(position.getRowIndex(), position.getColumnIndex() - 1) == 0) {
             tempPos = new Position(position.getRowIndex(), position.getColumnIndex() - 1);
-            possiblePositions.add(new MazeState(tempPos, 10));
+            possiblePositions.add(new MazeState(tempPos, 1));
         }
 
         //Check diagonals
@@ -82,22 +82,22 @@ public class SearchableMaze implements ISearchable {
         //Check down - left
         if (position.getRowIndex() < maze.getRowSize() - 1 && position.getColumnIndex() > 0 && maze.getAtIndex(position.getRowIndex() + 1, position.getColumnIndex() - 1) == 0 && /*check if have a path -> */ (maze.getAtIndex(position.getRowIndex(), position.getColumnIndex() - 1) == 0 || maze.getAtIndex(position.getRowIndex() + 1, position.getColumnIndex()) == 0)) {
             tempPos = new Position(position.getRowIndex() + 1, position.getColumnIndex() - 1);
-            possiblePositions.add(new MazeState(tempPos, 15));
+            possiblePositions.add(new MazeState(tempPos, Math.sqrt(2)));
         }
         //Check down - right
         if (position.getColumnIndex() < maze.getColumnSize() - 1 && position.getRowIndex() < maze.getRowSize() - 1 && maze.getAtIndex(position.getRowIndex() + 1, position.getColumnIndex() + 1) == 0 && /*check if have a path -> */ (maze.getAtIndex(position.getRowIndex() + 1, position.getColumnIndex()) == 0 || maze.getAtIndex(position.getRowIndex(),position.getColumnIndex() + 1) == 0)) {
             tempPos = new Position(position.getRowIndex() + 1, position.getColumnIndex() + 1);
-            possiblePositions.add(new MazeState(tempPos, 15));
+            possiblePositions.add(new MazeState(tempPos, Math.sqrt(2)));
         }
         //Check up - left
         if (position.getRowIndex() > 0 && position.getColumnIndex() > 0 && maze.getAtIndex(position.getRowIndex() - 1, position.getColumnIndex() - 1) == 0 && /*check if have a path -> */ (maze.getAtIndex(position.getRowIndex(), position.getColumnIndex() - 1) == 0 || maze.getAtIndex(position.getRowIndex() - 1, position.getColumnIndex()) == 0)) {
             tempPos = new Position(position.getRowIndex() - 1, position.getColumnIndex() - 1);
-            possiblePositions.add(new MazeState(tempPos, 15));
+            possiblePositions.add(new MazeState(tempPos, Math.sqrt(2)));
         }
         //Check up - right
         if (position.getRowIndex() > 0 && position.getColumnIndex() < maze.getColumnSize() - 1 && maze.getAtIndex(position.getRowIndex() - 1, position.getColumnIndex() + 1) == 0 && /*check if have a path -> */ (maze.getAtIndex(position.getRowIndex(), position.getColumnIndex() + 1) == 0 || maze.getAtIndex(position.getRowIndex() - 1, position.getColumnIndex()) == 0)) {
             tempPos = new Position(position.getRowIndex() - 1, position.getColumnIndex() + 1);
-            possiblePositions.add(new MazeState(tempPos, 15));
+            possiblePositions.add(new MazeState(tempPos, Math.sqrt(2)));
         }
 
         return possiblePositions;

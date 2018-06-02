@@ -21,7 +21,7 @@ public class MazeState extends AState{
      * @param position - Position of state
      * @param cost - Cost of state
      */
-    public MazeState(Position position, int cost){
+    public MazeState(Position position, double cost){
         super(cost);
         this.position = new Position(position);
     }

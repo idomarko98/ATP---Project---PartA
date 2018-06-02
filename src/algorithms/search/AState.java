@@ -6,12 +6,12 @@ package algorithms.search;
  */
 public abstract class AState implements Comparable {
 
-    private int cost;
+    private double cost;
 
     /** Constructor
      * @param cost - cost of a move
      */
-    public AState(int cost){
+    public AState(double cost){
         this.cost = cost;
     }
 
@@ -32,14 +32,14 @@ public abstract class AState implements Comparable {
     /** Getter for cost
      * @return cost(int)
      */
-    public int getCost() {
+    public double getCost() {
         return cost;
     }
 
     /** Add a cost to the cost of current state
      * @param cost - cost to add to this.cost
      */
-    public void addCost(int cost){
+    public void addCost(double cost){
         this.cost += cost;
     }
 
@@ -53,6 +53,7 @@ public abstract class AState implements Comparable {
         if(!(o instanceof AState))
             return 0;
         AState aState = (AState)o;
-        return this.cost - aState.cost;
+        return Double.compare(this.cost, aState.cost);
+        //return this.cost - aState.cost;
     }
 }
