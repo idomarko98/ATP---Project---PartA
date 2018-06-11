@@ -4,7 +4,6 @@ import IO.MyCompressorOutputStream;
 import algorithms.mazeGenerators.AMazeGenerator;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
-import com.sun.xml.internal.bind.v2.util.ByteArrayOutputStreamEx;
 
 import java.io.*;
 

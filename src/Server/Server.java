@@ -67,7 +67,7 @@ public class Server {
         try {
             server.close();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
         }
 
     }
